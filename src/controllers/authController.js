@@ -68,35 +68,68 @@ const bcrypt = require('bcryptjs');
 // };
 
 
+// const login = async (req, res) => {
+//     const { username, password } = req.body;
+//     try {
+//       const user = await User.findOne({ username });
+//       if (!user) {
+//         return res.status(400).json({ message: 'Invalid username or password' });
+//       }
 
+//       const isMatch = bcrypt.compareSync(password, user.password);
+//       if (!isMatch) {
+//         return res.status(400).json({ message: 'Invalid username or password' });
+//       }
+
+//       const payload = {
+//         user: {
+//           id: user.id,
+//         },
+//       };
+
+//       const token = jwt.sign(payload, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
+
+//       res.status(200).json({ token });
+//     } catch (error) {
+//       console.error('Error logging in:', error);
+//       res.status(500).json({ message: 'Server error' });
+//     }
+//   };
+
+//   module.exports = {
+//     login,
+//   };
+
+
+
+const adminmail = process.env.ADMINEMAIL;
+const adminpassword = process.env.ADMINPASSWORD;
 const login = async (req, res) => {
     const { username, password } = req.body;
-    try {
-      const user = await User.findOne({ username });
-      if (!user) {
-        return res.status(400).json({ message: 'Invalid username or password' });
-      }
-  
-      const isMatch = bcrypt.compareSync(password, user.password);
-      if (!isMatch) {
-        return res.status(400).json({ message: 'Invalid username or password' });
-      }
-  
-      const payload = {
-        user: {
-          id: user.id,
-        },
-      };
-  
-      const token = jwt.sign(payload, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
-  
-      res.status(200).json({ token });
-    } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).json({ message: 'Server error' });
+
+    if (username !== adminmail) {
+        return res.json({
+            success: false,
+            error: "Username is incorrect"
+        });
     }
-  };
-  
-  module.exports = {
+
+    if (password !== adminpassword) {
+        return res.json({
+            success: false,
+            error: "Password is incorrect"
+        });
+    }
+
+    // Generate a token
+    const token = jwt.sign({ username }, "secretKey", { expiresIn: '1h' });
+
+    return res.json({
+        success: true,
+        token
+    });
+};
+
+module.exports = {
     login,
-  };
+};
