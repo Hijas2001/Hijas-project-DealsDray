@@ -1,15 +1,41 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
+
+///schema for ceating products 
+const Product = mongoose.model("Product", {
+  id: {
+      type: Number,
+      required: true,
   },
-  password: {
-    type: String,
-    required: true,
+  name: {
+      type: String,
+      required: true,
   },
+  image: {
+      type: String,
+      required: true
+  },
+  category: {
+      type: String,
+      required: true
+  },
+  new_price: {
+      type: Number,
+      required: true
+  },
+  old_price: {
+      type: Number,
+      required: true
+  },
+  date: {
+      type: Date,
+      default: Date.now
+  },
+  available: {
+      type: Boolean,
+      default: true
+  }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+
+module.exports = mongoose.model('product', Product);
