@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const {login } = require('../controllers/authController');
-const path = require("path")
-const multer = require("multer")
-// const Product = require('../models/User');
+const UserSchema = require('../models/User');
 const bcrypt = require('bcryptjs');
+const {login,register} = require("../controllers/authController")
 
+router.post('/login',login)
 
-
-router.post('/login', login);
+router.post('/register',register)
 
 
 module.exports = router;
