@@ -29,9 +29,14 @@ const login = async (req, res) => {
     });
 };
 
-const register = async(req,res)=>{
-console.log("image url:",req.body);
-res.end()
+const register =  (req, res) => {
+    console.log("image url:", req.body);
+    const image_URL = req.body
+    if (image_URL !== null) {
+        res.json({ success: true, message: "Image uploaded successfully" });
+    } else {
+        res.json({ success: false, message: "Image uploaded field is empty" });
+    }
 }
 
 module.exports = {
